@@ -10,6 +10,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,22 +21,40 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.easynews.model.User;
+import com.example.liangmutian.mypicker.DatePickerDialog;
+import com.example.liangmutian.mypicker.DateUtil;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class RegistActivity extends AppCompatActivity
 {
     private EditText account, password;
-    private Button regist_commit;
+    private Button regist_commit, user_bth;
+    private Dialog dateDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
-        account = (EditText) findViewById(R.id.account);
+        account = findViewById(R.id.account);
+        user_bth = findViewById(R.id.user_bth);
+        user_bth.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                String date = new SimpleDateFormat("yyyy-MM-ss").format(new Date());
 
+                showDateDialog(DateUtil.getDateForString(date));
+
+            }
+        });
         password = (EditText) findViewById(R.id.password);
         regist_commit = (Button) findViewById(R.id.regist_commit);
         regist_commit.setOnClickListener(new View.OnClickListener()
@@ -88,6 +107,38 @@ public class RegistActivity extends AppCompatActivity
                 });
             }
         });
+    }
+
+    private void showDateDialog(List<Integer> date)
+    {
+        DatePickerDialog.Builder builder = new DatePickerDialog.Builder(this);
+        builder.setOnDateSelectedListener(new DatePickerDialog.OnDateSelectedListener()
+        {
+            @Override
+            public void onDateSelected(int[] dates)
+            {
+
+//                mTextView.setText(dates[0] + "-" + (dates[1] > 9 ? dates[1] : ("0" + dates[1])) + "-"
+//                        + (dates[2] > 9 ? dates[2] : ("0" + dates[2])));
+                user_bth.setText(dates[0] + "-" + (dates[1] > 9 ? dates[1] : ("0" + dates[1])) + "-"
+                        + (dates[2] > 9 ? dates[2] : ("0" + dates[2])));
+            }
+
+            @Override
+            public void onCancel()
+            {
+
+            }
+        })
+                .setSelectYear(date.get(0) - 1)
+                .setSelectMonth(date.get(1) - 1)
+                .setSelectDay(date.get(2) - 1);
+
+        builder.setMaxYear(DateUtil.getYear());
+        builder.setMaxMonth(DateUtil.getDateForString(DateUtil.getToday()).get(1));
+        builder.setMaxDay(DateUtil.getDateForString(DateUtil.getToday()).get(2));
+        dateDialog = builder.create();
+        dateDialog.show();
     }
 
     private Handler mHandler = new Handler()

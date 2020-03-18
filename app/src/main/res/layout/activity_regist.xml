@@ -76,4 +76,11 @@
         android:text="注册"
         android:textAllCaps="false"
         android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/user_bth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+         />
 </LinearLayout>
