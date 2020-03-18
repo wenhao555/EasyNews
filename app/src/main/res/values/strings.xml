@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">易闻</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <array name="expand_titles">
+        <item>推荐</item>
+        <item>本地</item>
+        <item>国际</item>
+        <item>军事</item>
+        <item>科技</item>
+        <item>生活</item>
+    </array>
+</resources>
