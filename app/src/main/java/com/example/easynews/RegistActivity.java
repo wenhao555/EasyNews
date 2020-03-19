@@ -10,6 +10,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easynews.model.User;
@@ -34,8 +38,12 @@ import java.util.concurrent.TimeUnit;
 public class RegistActivity extends AppCompatActivity
 {
     private EditText account, password;
-    private Button regist_commit, user_bth;
+    private Button regist_commit;
     private Dialog dateDialog;
+    private TextView user_bth;
+    private RadioGroup user_group;
+    private boolean isMan = false;
+    private RadioButton user_man, user_woman;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,8 +57,7 @@ public class RegistActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                String date = new SimpleDateFormat("yyyy-MM-ss").format(new Date());
-
+                @SuppressLint("SimpleDateFormat") String date = new SimpleDateFormat("yyyy-MM-ss").format(new Date());
                 showDateDialog(DateUtil.getDateForString(date));
 
             }
@@ -114,6 +121,7 @@ public class RegistActivity extends AppCompatActivity
         DatePickerDialog.Builder builder = new DatePickerDialog.Builder(this);
         builder.setOnDateSelectedListener(new DatePickerDialog.OnDateSelectedListener()
         {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDateSelected(int[] dates)
             {

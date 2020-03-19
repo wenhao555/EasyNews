@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">易闻</string>
+    <string name="home">新闻</string>
+    <string name="mine">我的</string>
+    <string name="user">个人资料</string>
+    <string name="updatepwd">修改密码</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

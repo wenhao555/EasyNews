@@ -12,35 +12,41 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class DatePickerDialog extends Dialog {
+public class DatePickerDialog extends Dialog
+{
 
-    private static  int MIN_YEAR = 1900;
-    private static  int MAX_YEAR = 2100;
+    private static int MIN_YEAR = 1900;
+    private static int MAX_YEAR = 2100;
     private Params params;
 
-    public DatePickerDialog(Context context, int themeResId) {
+    public DatePickerDialog(Context context, int themeResId)
+    {
         super(context, themeResId);
     }
 
-    private void setParams(DatePickerDialog.Params params) {
+    private void setParams(DatePickerDialog.Params params)
+    {
         this.params = params;
     }
 
-    public interface OnDateSelectedListener {
-         void onDateSelected(int[] dates);
-         void onCancel();
+    public interface OnDateSelectedListener
+    {
+        void onDateSelected(int[] dates);
+
+        void onCancel();
     }
 
 
-
-    private static final class Params {
+    private static final class Params
+    {
         private boolean shadow = true;
         private boolean canCancel = true;
         private LoopView loopYear, loopMonth, loopDay;
         private OnDateSelectedListener callback;
     }
 
-    public static class Builder {
+    public static class Builder
+    {
         private final Context context;
         private final DatePickerDialog.Params params;
         private Integer minYear;
@@ -53,53 +59,63 @@ public class DatePickerDialog extends Dialog {
         private Integer minDay;
         private Integer maxDay;
 
-        public Builder(Context context) {
+        public Builder(Context context)
+        {
             this.context = context;
             params = new DatePickerDialog.Params();
         }
 
-        public Builder setMinYear(int year){
-            minYear=year;
+        public Builder setMinYear(int year)
+        {
+            minYear = year;
             return this;
         }
 
-        public Builder setMaxYear(int year){
-            maxYear=year;
+        public Builder setMaxYear(int year)
+        {
+            maxYear = year;
             return this;
         }
 
-        public Builder setMinMonth(int month){
-            minMonth=month;
+        public Builder setMinMonth(int month)
+        {
+            minMonth = month;
             return this;
         }
 
-        public Builder setMaxMonth(int month){
-            maxMonth=month;
+        public Builder setMaxMonth(int month)
+        {
+            maxMonth = month;
             return this;
         }
 
-        public Builder setMinDay(int day){
-            minDay=day;
+        public Builder setMinDay(int day)
+        {
+            minDay = day;
             return this;
         }
 
-        public Builder setMaxDay(int day){
-            maxDay=day;
+        public Builder setMaxDay(int day)
+        {
+            maxDay = day;
             return this;
         }
 
-        public Builder setSelectYear(int year){
-            this.selectYear=year;
+        public Builder setSelectYear(int year)
+        {
+            this.selectYear = year;
             return this;
         }
 
-        public Builder setSelectMonth(int month){
-            this.selectMonth=month;
+        public Builder setSelectMonth(int month)
+        {
+            this.selectMonth = month;
             return this;
         }
 
-        public Builder setSelectDay(int day){
-            this.selectDay=day;
+        public Builder setSelectDay(int day)
+        {
+            this.selectDay = day;
             return this;
         }
 
@@ -108,97 +124,120 @@ public class DatePickerDialog extends Dialog {
          *
          * @return int[]数组形式返回。例[1990,6,15]
          */
-        private final int[] getCurrDateValues() {
+        private final int[] getCurrDateValues()
+        {
             int currYear = Integer.parseInt(params.loopYear.getCurrentItemValue());
             int currMonth = Integer.parseInt(params.loopMonth.getCurrentItemValue());
             int currDay = Integer.parseInt(params.loopDay.getCurrentItemValue());
             return new int[]{currYear, currMonth, currDay};
         }
 
-        public Builder setOnDateSelectedListener(OnDateSelectedListener onDateSelectedListener) {
+        public Builder setOnDateSelectedListener(OnDateSelectedListener onDateSelectedListener)
+        {
             params.callback = onDateSelectedListener;
             return this;
         }
 
 
-        public DatePickerDialog create() {
+        public DatePickerDialog create()
+        {
             final DatePickerDialog dialog = new DatePickerDialog(context, params.shadow ? R.style.Theme_Light_NoTitle_Dialog : R.style.Theme_Light_NoTitle_NoShadow_Dialog);
             View view = LayoutInflater.from(context).inflate(R.layout.layout_picker_date, null);
 
-            view.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
                     dialog.dismiss();
                     params.callback.onCancel();
                 }
             });
 
 
-
             Calendar c = Calendar.getInstance();
 
             final LoopView loopDay = (LoopView) view.findViewById(R.id.loop_day);
             loopDay.setArrayList(d(1, 30));
-            if(selectDay!=null){
+            if (selectDay != null)
+            {
                 loopDay.setCurrentItem(selectDay);
-            }else{
+            } else
+            {
                 loopDay.setCurrentItem(c.get(Calendar.DATE));
             }
             //loopDay.setNotLoop();
 
             final LoopView loopYear = (LoopView) view.findViewById(R.id.loop_year);
             loopYear.setArrayList(d(MIN_YEAR, MAX_YEAR - MIN_YEAR + 1));
-            if(selectYear!=null){
-                loopYear.setCurrentItem(selectYear-MIN_YEAR+1);
-            }else{
+            if (selectYear != null)
+            {
+                loopYear.setCurrentItem(selectYear - MIN_YEAR + 1);
+            } else
+            {
                 loopYear.setCurrentItem(MAX_YEAR);
             }
             loopYear.setNotLoop();
 
             final LoopView loopMonth = (LoopView) view.findViewById(R.id.loop_month);
             loopMonth.setArrayList(d(1, 12));
-            if(selectMonth!=null){
+            if (selectMonth != null)
+            {
                 loopMonth.setCurrentItem(selectMonth);
-            }else{
+            } else
+            {
                 loopMonth.setCurrentItem(c.get(Calendar.MONTH));
             }
             loopMonth.setNotLoop();
 
 
-
-            final LoopListener maxDaySyncListener = new LoopListener() {
+            final LoopListener maxDaySyncListener = new LoopListener()
+            {
                 @Override
-                public void onItemSelect(int item) {
+                public void onItemSelect(int item)
+                {
                     Calendar c = Calendar.getInstance();
-                    boolean needFixed=true;
-                    if(minYear!=null){
-                        if(Integer.parseInt(loopYear.getCurrentItemValue())==minYear ){
-                            if(minMonth!=null){
-                                if(Integer.parseInt(loopMonth.getCurrentItemValue())<minMonth){
+                    boolean needFixed = true;
+                    if (minYear != null)
+                    {
+                        if (Integer.parseInt(loopYear.getCurrentItemValue()) == minYear)
+                        {
+                            if (minMonth != null)
+                            {
+                                if (Integer.parseInt(loopMonth.getCurrentItemValue()) < minMonth)
+                                {
                                     loopMonth.setCurrentItem(minMonth - 1);
                                 }
                             }
-                        }else if(Integer.parseInt(loopYear.getCurrentItemValue())<minYear){
-                            loopYear.setCurrentItem(minYear-MIN_YEAR);
+
+                        } else if (Integer.parseInt(loopYear.getCurrentItemValue()) < minYear)
+                        {
+                            loopYear.setCurrentItem(minYear - MIN_YEAR);
                         }
                     }
 
-                    if(maxYear!=null){
-                        if(Integer.parseInt(loopYear.getCurrentItemValue())==maxYear ){
-                            if(maxMonth!=null){
-                                if(Integer.parseInt(loopMonth.getCurrentItemValue())>maxMonth){
+                    if (maxYear != null)
+                    {
+                        if (Integer.parseInt(loopYear.getCurrentItemValue()) == maxYear)
+                        {
+                            if (maxMonth != null)
+                            {
+                                if (Integer.parseInt(loopMonth.getCurrentItemValue()) > maxMonth)
+                                {
                                     loopMonth.setCurrentItem(maxMonth - 1);
                                 }
                             }
-                        }else if(Integer.parseInt(loopYear.getCurrentItemValue())>maxYear){
-                            loopYear.setCurrentItem(maxYear-MIN_YEAR);
+                        } else if (Integer.parseInt(loopYear.getCurrentItemValue()) > maxYear)
+                        {
+                            loopYear.setCurrentItem(maxYear - MIN_YEAR);
                         }
                     }
 
                     c.set(Integer.parseInt(loopYear.getCurrentItemValue()), Integer.parseInt(loopMonth.getCurrentItemValue()) - 1, 1);
                     c.roll(Calendar.DATE, false);
 
-                    if(needFixed){
+                    if (needFixed)
+                    {
                         int maxDayOfMonth = c.get(Calendar.DATE);
                         int fixedCurr = loopDay.getCurrentItem();
                         loopDay.setArrayList(d(1, maxDayOfMonth));
@@ -209,23 +248,27 @@ public class DatePickerDialog extends Dialog {
                 }
             };
 
-            final LoopListener dayLoopListener=new LoopListener() {
+            final LoopListener dayLoopListener = new LoopListener()
+            {
                 @Override
-                public void onItemSelect(int item) {
-                    if(minYear!=null && minMonth!=null && minDay!=null
-                            && Integer.parseInt(loopYear.getCurrentItemValue())==minYear
-                            && Integer.parseInt(loopMonth.getCurrentItemValue())==minMonth
-                            && Integer.parseInt(loopDay.getCurrentItemValue())<minDay
-                            ){
-                        loopDay.setCurrentItem(minDay-1);
+                public void onItemSelect(int item)
+                {
+                    if (minYear != null && minMonth != null && minDay != null
+                            && Integer.parseInt(loopYear.getCurrentItemValue()) == minYear
+                            && Integer.parseInt(loopMonth.getCurrentItemValue()) == minMonth
+                            && Integer.parseInt(loopDay.getCurrentItemValue()) < minDay
+                    )
+                    {
+                        loopDay.setCurrentItem(minDay - 1);
                     }
 
-                    if(maxYear!=null && maxMonth!=null && maxDay!=null
-                            && Integer.parseInt(loopYear.getCurrentItemValue())==maxYear
-                            && Integer.parseInt(loopMonth.getCurrentItemValue())==maxMonth
-                            && Integer.parseInt(loopDay.getCurrentItemValue())>maxDay
-                            ){
-                        loopDay.setCurrentItem(maxDay-1);
+                    if (maxYear != null && maxMonth != null && maxDay != null
+                            && Integer.parseInt(loopYear.getCurrentItemValue()) == maxYear
+                            && Integer.parseInt(loopMonth.getCurrentItemValue()) == maxMonth
+                            && Integer.parseInt(loopDay.getCurrentItemValue()) > maxDay
+                    )
+                    {
+                        loopDay.setCurrentItem(maxDay - 1);
                     }
                 }
             };
@@ -233,9 +276,11 @@ public class DatePickerDialog extends Dialog {
             loopMonth.setListener(maxDaySyncListener);
             loopDay.setListener(dayLoopListener);
 
-            view.findViewById(R.id.tx_finish).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.tx_finish).setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     dialog.dismiss();
                     params.callback.onDateSelected(getCurrDateValues());
                 }
@@ -269,14 +314,15 @@ public class DatePickerDialog extends Dialog {
          * @param count    数字个数
          * @return
          */
-        private static List<String> d(int startNum, int count) {
+        private static List<String> d(int startNum, int count)
+        {
             String[] values = new String[count];
-            for (int i = startNum; i < startNum + count; i++) {
+            for (int i = startNum; i < startNum + count; i++)
+            {
                 String tempValue = (i < 10 ? "0" : "") + i;
                 values[i - startNum] = tempValue;
             }
             return Arrays.asList(values);
         }
-
     }
 }

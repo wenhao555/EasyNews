@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -36,4 +40,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.1'
     implementation files('libs/sun.misc.BASE64Decoder.jar')
     implementation project(path: ':mypicker')
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
 }
