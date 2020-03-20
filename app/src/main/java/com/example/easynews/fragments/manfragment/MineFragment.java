@@ -10,12 +10,17 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.easynews.LoginActivity;
+import com.example.easynews.MainActivity;
 import com.example.easynews.R;
 import com.example.easynews.UpdatePwdActivity;
 import com.example.easynews.UserActivity;
+import com.example.easynews.WelcomeActivity;
+import com.example.easynews.utils.PrefUtils;
 import com.example.easynews.views.CircleImageView;
 
 /**
@@ -32,6 +37,7 @@ public class MineFragment extends Fragment
     private CircleImageView mine_img;
     private TextView mine_name;
     private LinearLayout ming_data, ming_uppwd;
+    private Button mine_exit;
 
     @SuppressLint("CutPasteId")
     @Override
@@ -40,9 +46,25 @@ public class MineFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         mine_img = view.findViewById(R.id.mine_img);
+        mine_exit = view.findViewById(R.id.mine_exit);
+        mine_exit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                PrefUtils.setString(getActivity(), "name", "");
+                PrefUtils.setString(getActivity(), "password", "");
+                PrefUtils.setString(getActivity(), "sex", "");
+                PrefUtils.setString(getActivity(), "birth", "");
+                PrefUtils.setString(getActivity(), "account", "");
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+            }
+        });
         mine_name = view.findViewById(R.id.mine_name);
         ming_data = view.findViewById(R.id.ming_data);
         ming_uppwd = view.findViewById(R.id.ming_uppwd);
+        mine_name.setText(PrefUtils.getString(getActivity(), "account", ""));
         ming_data.setOnClickListener(new View.OnClickListener()
         {
             @Override

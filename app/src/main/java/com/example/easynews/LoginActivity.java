@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easynews.model.User;
+import com.example.easynews.net.Urls;
 import com.example.easynews.utils.PrefUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -39,17 +40,18 @@ public class LoginActivity extends AppCompatActivity
     private TextView forget_pwd;
     private Context context;
     private int isTeacher = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context = this;
-        account = (EditText) findViewById(R.id.account);
-        password = (EditText) findViewById(R.id.password);
-        forget_pwd = (TextView) findViewById(R.id.forget_pwd);
-        login_commit = (Button) findViewById(R.id.login_commit);
-        regist = (Button) findViewById(R.id.regist);
+        account = findViewById(R.id.account);
+        password = findViewById(R.id.password);
+        forget_pwd = findViewById(R.id.forget_pwd);
+        login_commit = findViewById(R.id.login_commit);
+        regist = findViewById(R.id.regist);
         forget_pwd.setVisibility(View.GONE);
         regist.setOnClickListener(new View.OnClickListener()
         {
@@ -59,24 +61,25 @@ public class LoginActivity extends AppCompatActivity
                 startActivity(new Intent(context, RegistActivity.class));
             }
         });
-        login_commit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
+            login_commit.setOnClickListener(new View.OnClickListener()
             {
-                String userName = account.getText().toString();
-                String pwd = password.getText().toString();
-                if (userName.equals("") || pwd.equals(""))
+                @Override
+                public void onClick(View v)
                 {
-                    Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
-                } else
-                {
-                    requestData(userName, pwd);
-                }
+                    String userName = account.getText().toString();
+                    String pwd = password.getText().toString();
+                    if (userName.equals("") || pwd.equals(""))
+                    {
+                        Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
+                    } else
+                    {
+                        requestData(userName, pwd);
+                    }
 
-            }
-        });
+                }
+            });
     }
+
 
     private void requestData(String userName, String pwd)
     {
@@ -85,14 +88,13 @@ public class LoginActivity extends AppCompatActivity
                 .readTimeout(10, TimeUnit.SECONDS)
                 .build();
         final User user = new User();
-        user.setName(userName);
+        user.setAccount(userName);
         user.setPassword(pwd);
-        user.setUserRole(isTeacher);
         Gson gson = new Gson();
         String Json = gson.toJson(user);
         final RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), Json);
         final Request request = new Request.Builder()
-//                .url(Urls.GET_USER)
+                .url(Urls.login)
                 .post(requestBody)
                 .build();
         Call call = okHttpClient.newCall(request);
@@ -124,7 +126,6 @@ public class LoginActivity extends AppCompatActivity
             super.handleMessage(msg);
             if (msg.what == 1)
             {
-                Log.e("asda", msg.obj.toString());
                 String string = msg.obj.toString();
                 if (string.equals(""))
                 {
@@ -137,15 +138,12 @@ public class LoginActivity extends AppCompatActivity
                     Log.e("asd", string + "");
                     if (!user1.getName().equals(""))
                     {
-                        PrefUtils.setInt(context, "id", user1.getAppUserId());
                         PrefUtils.setString(context, "name", user1.getName());
-                        PrefUtils.setInt(context, "teacherId", user1.getTeacherId());
                         PrefUtils.setString(context, "password", user1.getPassword());
-                        PrefUtils.setInt(context, "userRole", user1.getUserRole());
-                        PrefUtils.setString(context, "realName", user1.getRealName());
-                        PrefUtils.setString(context, "stuName", user1.getStuName());
+                        PrefUtils.setString(context, "sex", user1.getSex());
+                        PrefUtils.setString(context, "birth", user1.getBirth());
+                        PrefUtils.setString(context, "account", user1.getAccount());
                         startActivity(new Intent(context, MainActivity.class));
-
                         finish();
                     } else
                     {

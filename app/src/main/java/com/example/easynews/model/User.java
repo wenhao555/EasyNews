@@ -2,76 +2,31 @@ package com.example.easynews.model;
 
 public class User
 {
-    private Integer id;
+    private String account;
+    private String password;
+    private String name;
+    private String sex;
+    private String birth;
+    private Boolean admin;
 
-    public Integer getId()
+    public String getAccount()
     {
-        return id;
+        return account;
     }
 
-    public void setId(Integer id)
+    public String getBirth()
     {
-        this.id = id;
+        return birth;
     }
 
-    public Integer getAppUserId()
+    public void setBirth(String birth)
     {
-        return appUserId;
+        this.birth = birth;
     }
 
-    public void setAppUserId(Integer appUserId)
+    public void setAccount(String account)
     {
-        this.appUserId = appUserId;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getRealName()
-    {
-        return realName;
-    }
-
-    public void setRealName(String realName)
-    {
-        this.realName = realName;
-    }
-
-    public Integer getTeacherId()
-    {
-        return teacherId;
-    }
-
-    public void setTeacherId(Integer teacherId)
-    {
-        this.teacherId = teacherId;
-    }
-
-    public String getStuName()
-    {
-        return stuName;
-    }
-
-    public void setStuName(String stuName)
-    {
-        this.stuName = stuName;
-    }
-
-    public String getClassName()
-    {
-        return className;
-    }
-
-    public void setClassName(String className)
-    {
-        this.className = className;
+        this.account = account;
     }
 
     public String getPassword()
@@ -84,22 +39,45 @@ public class User
         this.password = password;
     }
 
-    public Integer getUserRole()
+    public String getName()
     {
-        return userRole;
+        return name;
     }
 
-    public void setUserRole(Integer userRole)
+    public void setName(String name)
     {
-        this.userRole = userRole;
+        this.name = name;
     }
 
-    private Integer appUserId;
-    private String name;
-    private String realName;
-    private Integer teacherId;
-    private String stuName;
-    private String className;
-    private String password;
-    private Integer userRole;
+    public String getSex()
+    {
+        return sex;
+    }
+
+    public void setSex(String sex)
+    {
+        this.sex = sex;
+    }
+
+    public Boolean getAdmin()
+    {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin)
+    {
+        this.admin = admin;
+    }
+
+    public String getImage()
+    {
+        return image;
+    }
+
+    public void setImage(String image)
+    {
+        this.image = image;
+    }
+
+    private String image;
 }

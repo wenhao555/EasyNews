@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easynews.model.User;
+import com.example.easynews.net.Urls;
 import com.example.liangmutian.mypicker.DatePickerDialog;
 import com.example.liangmutian.mypicker.DateUtil;
 import com.google.gson.Gson;
@@ -37,12 +38,12 @@ import java.util.concurrent.TimeUnit;
 
 public class RegistActivity extends AppCompatActivity
 {
-    private EditText account, password;
+    private EditText account, password, name;
     private Button regist_commit;
     private Dialog dateDialog;
     private TextView user_bth;
     private RadioGroup user_group;
-    private boolean isMan = false;
+    private String isMan = "男";
     private RadioButton user_man, user_woman;
 
     @Override
@@ -51,7 +52,25 @@ public class RegistActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
         account = findViewById(R.id.account);
+        name = findViewById(R.id.name);
         user_bth = findViewById(R.id.user_bth);
+        user_group = findViewById(R.id.user_group);
+        user_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                switch (checkedId)
+                {
+                    case R.id.user_man:
+                        isMan = "男";
+                        break;
+                    case R.id.user_woman:
+                        isMan = "女";
+                        break;
+                }
+            }
+        });
         user_bth.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -62,15 +81,17 @@ public class RegistActivity extends AppCompatActivity
 
             }
         });
-        password = (EditText) findViewById(R.id.password);
-        regist_commit = (Button) findViewById(R.id.regist_commit);
+        password = findViewById(R.id.password);
+        regist_commit = findViewById(R.id.regist_commit);
         regist_commit.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                String name = account.getText().toString();
                 String pwd = password.getText().toString();
+                String accounts = account.getText().toString();
+                String names = name.getText().toString();
+                String bth = user_bth.getText().toString();
                 OkHttpClient okHttpClient = new OkHttpClient.Builder()
                         .connectTimeout(10, TimeUnit.SECONDS)
                         .readTimeout(10, TimeUnit.SECONDS)
@@ -84,14 +105,22 @@ public class RegistActivity extends AppCompatActivity
                 }
 
                 User user = new User();
-                user.setName(name);
-                user.setPassword(pwd);
-                user.setUserRole(1);
+                user.setAccount(accounts);
+                if (pwd.length() > 6)
+                    user.setPassword(pwd);
+                else
+                {
+                    Toast.makeText(RegistActivity.this, "密码过短", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                user.setName(names);
+                user.setSex(isMan);
+                user.setBirth(bth);
                 Gson gson = new Gson();
                 String Json = gson.toJson(user);
                 RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), Json);
                 final Request request = new Request.Builder()
-//                        .url(Urls.ADD_USER)
+                        .url(Urls.createUser)
                         .post(requestBody)
                         .build();
                 Call call = okHttpClient.newCall(request);
@@ -126,8 +155,6 @@ public class RegistActivity extends AppCompatActivity
             public void onDateSelected(int[] dates)
             {
 
-//                mTextView.setText(dates[0] + "-" + (dates[1] > 9 ? dates[1] : ("0" + dates[1])) + "-"
-//                        + (dates[2] > 9 ? dates[2] : ("0" + dates[2])));
                 user_bth.setText(dates[0] + "-" + (dates[1] > 9 ? dates[1] : ("0" + dates[1])) + "-"
                         + (dates[2] > 9 ? dates[2] : ("0" + dates[2])));
             }
@@ -157,14 +184,11 @@ public class RegistActivity extends AppCompatActivity
             super.handleMessage(msg);
             if (msg.what == 1)
             {
-                String string = (String) msg.obj;
-                if (string.equals("admin用户不可以注册"))
+//                boolean string = (Boolean) msg.obj;
+                if (!Boolean.parseBoolean(msg.obj.toString()))
                 {
-                    Toast.makeText(RegistActivity.this, "admin用户不可以注册", Toast.LENGTH_SHORT).show();
-                } else if (string.equals("非系统指定用户，不可以注册"))
-                {
-                    Toast.makeText(RegistActivity.this, "非系统指定用户，不可以注册", Toast.LENGTH_SHORT).show();
-                } else if (string.equals("注册成功"))
+                    Toast.makeText(RegistActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
+                } else
                 {
                     Toast.makeText(RegistActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                     finish();

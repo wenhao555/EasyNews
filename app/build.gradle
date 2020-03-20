@@ -41,4 +41,5 @@ dependencies {
     implementation files('libs/sun.misc.BASE64Decoder.jar')
     implementation project(path: ':mypicker')
     implementation 'com.google.android.material:material:1.1.0-alpha08'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 }

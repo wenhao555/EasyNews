@@ -1,7 +1,9 @@
 package com.example.easynews.model;
 
-public class News
+public class Recommend
 {
+    private int id;
+
     public int getId()
     {
         return id;
@@ -10,26 +12,6 @@ public class News
     public void setId(int id)
     {
         this.id = id;
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
-
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
-
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType(String type)
-    {
-        this.type = type;
     }
 
     public String getContent()
@@ -62,10 +44,29 @@ public class News
         this.image = image;
     }
 
-    private int id;
-    private String title;
-    private String type;
+    public String getType()
+    {
+        return type;
+    }
+
+    public void setType(String type)
+    {
+        this.type = type;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
     private String content;
     private String date;
     private String image;
+    private String type;
+    private String title;
 }
