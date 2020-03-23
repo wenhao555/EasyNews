@@ -33,13 +33,30 @@
 
     </RelativeLayout>
 
-    <com.example.easynews.views.CircleImageView
-        android:id="@+id/user_img"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="50dp"
-        android:src="@mipmap/ic_launcher" />
+        android:background="@color/button_red"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.example.easynews.views.CircleImageView
+            android:id="@+id/user_img"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="50dp"
+
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="50dp"
+            android:text="点击图片修改头像"
+            android:textColor="@color/white"></TextView>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

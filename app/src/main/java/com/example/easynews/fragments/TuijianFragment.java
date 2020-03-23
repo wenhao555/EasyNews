@@ -86,9 +86,13 @@ public class TuijianFragment extends Fragment
             public void onItemClick(@NonNull int position)
             {
                 final News news = newsList.get(position);
+                String type = "1";
                 startActivity(new Intent(getActivity(), NewssActivity.class).putExtra("title", news.getTitle())
                         .putExtra("img", news.getImage())
-                        .putExtra("news", news.getContent()));
+                        .putExtra("news", news.getContent())
+                        .putExtra("time", news.getDate())
+                        .putExtra("type", "推荐")
+                        .putExtra("id", news.getId()));
             }
         });
         return view;
@@ -173,7 +177,7 @@ public class TuijianFragment extends Fragment
         String Json = gson.toJson(news);
         RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), Json);
         final Request request = new Request.Builder()
-                .url(Urls.getNewsByType)
+                .url(Urls.getNewsByRecommend)
                 .post(requestBody)
                 .build();
         Call call = okHttpClient.newCall(request);

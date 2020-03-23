@@ -61,23 +61,23 @@ public class LoginActivity extends AppCompatActivity
                 startActivity(new Intent(context, RegistActivity.class));
             }
         });
-            login_commit.setOnClickListener(new View.OnClickListener()
+        login_commit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
             {
-                @Override
-                public void onClick(View v)
+                String userName = account.getText().toString();
+                String pwd = password.getText().toString();
+                if (userName.equals("") || pwd.equals(""))
                 {
-                    String userName = account.getText().toString();
-                    String pwd = password.getText().toString();
-                    if (userName.equals("") || pwd.equals(""))
-                    {
-                        Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
-                    } else
-                    {
-                        requestData(userName, pwd);
-                    }
-
+                    Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
+                } else
+                {
+                    requestData(userName, pwd);
                 }
-            });
+
+            }
+        });
     }
 
 
@@ -136,13 +136,14 @@ public class LoginActivity extends AppCompatActivity
                     Gson gson = new Gson();
                     User user1 = gson.fromJson(jsonObject, User.class);
                     Log.e("asd", string + "");
-                    if (!user1.getName().equals(""))
+                    if (!user1.getAccount().equals(""))
                     {
                         PrefUtils.setString(context, "name", user1.getName());
                         PrefUtils.setString(context, "password", user1.getPassword());
                         PrefUtils.setString(context, "sex", user1.getSex());
                         PrefUtils.setString(context, "birth", user1.getBirth());
                         PrefUtils.setString(context, "account", user1.getAccount());
+                        PrefUtils.setString(context, "imgpath", user1.getImage());
                         startActivity(new Intent(context, MainActivity.class));
                         finish();
                     } else

@@ -87,7 +87,10 @@ public class JunShiFragment extends Fragment
                 final News news = newsList.get(position);
                 startActivity(new Intent(getActivity(), NewssActivity.class).putExtra("title", news.getTitle())
                         .putExtra("img", news.getImage())
-                        .putExtra("news", news.getContent()));
+                        .putExtra("news", news.getContent())
+                        .putExtra("time", news.getDate())
+                        .putExtra("type", "军事")
+                        .putExtra("id", news.getId()));
             }
         });
         return view;
