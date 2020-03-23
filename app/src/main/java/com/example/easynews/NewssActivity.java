@@ -59,6 +59,10 @@ public class NewssActivity extends AppCompatActivity
         type = getIntent().getStringExtra("type");
         imgs = getIntent().getStringExtra("img");
         time = getIntent().getStringExtra("time");
+        if (type.equals("推荐"))
+        {
+            news_recommend.setVisibility(View.INVISIBLE);
+        }
         news_img.setOnClickListener(new View.OnClickListener()
         {
             @Override
