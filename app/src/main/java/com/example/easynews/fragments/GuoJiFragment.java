@@ -76,8 +76,8 @@ public class GuoJiFragment extends Fragment
             }
         });
         recyvle.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyvle.setAdapter(adapter);
         initData();
+        recyvle.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnItemClickListener()
         {
             @Override
